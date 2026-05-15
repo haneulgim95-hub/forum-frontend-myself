@@ -23,7 +23,7 @@ export const signUpSchema = z
             .min(5)
             .optional(),
         birthdate: z.string().optional(),
-        gender: z.enum(Gender),
+        gender: z.enum(Gender, "성별은 필수값입니다."),
     })
     .refine(data => data.password === data.passwordConfirm, {
         path: ["passwordConfirm"],

@@ -4,20 +4,69 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import styled from "styled-components";
 import { Gender } from "../../../types/user.type.ts";
 import Button from "../../../components/common/button/Button.tsx";
+import { useNavigate } from "react-router";
 
 function SignUpPage() {
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<SignUpInputType>({
         resolver: zodResolver(signUpSchema),
         mode: "onBlur",
     });
 
+    const onSubmit = async (data: SignUpInputType) => {
+        try {
+            const {passwordConfirm, ...submitData} = data;
+
+            const response = await fetch("http://localhost:8000/user/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(submitData),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "회원가입 중 오류가 발생했습니다.");
+            }
+
+            alert("회원가입이 완료되었습니다. 로그인을 진행해주세요.");
+            navigate("/auth/signin");
+        } catch (error) {
+            if (error instanceof Error) {
+                const errorMessage = error.message;
+
+                if (errorMessage === "이미 사용 중인 아이디입니다.") {
+                    setError("username", { message: errorMessage });
+                    return;
+                }
+                if (errorMessage === "이미 가입된 이메일입니다.") {
+                    setError("email", { message: errorMessage });
+                    return;
+                }
+                if (errorMessage === "이미 사용 중인 닉네임입니다.") {
+                    setError("nickname", { message: errorMessage });
+                    return;
+                }
+                setError("root", {message: errorMessage});
+                return;
+            }
+
+            console.log(error);
+            // 진짜 예상하지 못한 에러
+            setError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
+            return;
+        }
+    }
+
     return (
         <AuthContainer>
-            <FormCard>
+            <FormCard onSubmit={handleSubmit(onSubmit)}>
                 <Title>회원가입</Title>
                 <SubTitle>토론 대난투에 오신것을 환영합니다.</SubTitle>
                 <FormBox>
@@ -108,8 +157,7 @@ function SignUpPage() {
                         <Select
                             {...register("gender")}
                             id={"gender"}
-                            $hasError={!!errors.birthdate}
-                        >
+                            $hasError={!!errors.birthdate}>
                             <option value={""}>성별을 선택해주세요.</option>
                             <option value={Gender.MALE}>남성</option>
                             <option value={Gender.FEMALE}>여성</option>
@@ -117,7 +165,14 @@ function SignUpPage() {
                         {errors.gender && <ErrorMessage>{errors.gender.message}</ErrorMessage>}
                     </InputGroup>
                 </FormBox>
-                    <Button color={"primary"} variant={"contained"} disabled={isSubmitting} fullwidth={true}>회원가입</Button>
+                {errors.root && <RootErrorMessage>{errors.root.message}</RootErrorMessage>}
+                <Button
+                    color={"primary"}
+                    variant={"contained"}
+                    disabled={isSubmitting}
+                    fullwidth={true}>
+                    회원가입
+                </Button>
             </FormCard>
         </AuthContainer>
     );
@@ -218,4 +273,12 @@ const ErrorMessage = styled.span`
     font-size: 13px;
     color: ${props => props.theme.colors.error};
     font-weight: 500;
+`;
+
+const RootErrorMessage = styled.p`
+    font-size: 14px;
+    text-align: center;
+    color: ${props => props.theme.colors.error};
+    font-weight: 500;
+    margin-bottom: 50px;
 `;
