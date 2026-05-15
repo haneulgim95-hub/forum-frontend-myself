@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Gender } from "../../../types/user.type.ts";
 import Button from "../../../components/common/button/Button.tsx";
 import { useNavigate } from "react-router";
+import axiosInstance from "../../../api/axiosInstance.ts";
+import axios from "axios";
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -23,44 +25,20 @@ function SignUpPage() {
         try {
             const {passwordConfirm, ...submitData} = data;
 
-            const response = await fetch("http://localhost:8000/user/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(submitData),
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || "회원가입 중 오류가 발생했습니다.");
-            }
+            await axiosInstance.post("/user/create", submitData);
+            // 성공을 했었을때 백엔드가 전달해준 내용은 response.data에 객체 상태로 존재함
 
             alert("회원가입이 완료되었습니다. 로그인을 진행해주세요.");
             navigate("/auth/signin");
         } catch (error) {
-            if (error instanceof Error) {
-                const errorMessage = error.message;
+            let errorMessage = "회원가입 중 오류가 발생했습니다.";
 
-                if (errorMessage === "이미 사용 중인 아이디입니다.") {
-                    setError("username", { message: errorMessage });
-                    return;
-                }
-                if (errorMessage === "이미 가입된 이메일입니다.") {
-                    setError("email", { message: errorMessage });
-                    return;
-                }
-                if (errorMessage === "이미 사용 중인 닉네임입니다.") {
-                    setError("nickname", { message: errorMessage });
-                    return;
-                }
-                setError("root", {message: errorMessage});
-                return;
+            if (axios.isAxiosError(error)) {
+                errorMessage = error.response?.data?.message || errorMessage;
+            } else if (error instanceof Error) {
+                errorMessage = error.message;
             }
-
-            console.log(error);
-            // 진짜 예상하지 못한 에러
-            setError("root", { message: "회원가입에 실패했습니다. 다시 시도해주세요." });
-            return;
+            setError("root", {message: errorMessage});
         }
     }
 
