@@ -31,14 +31,14 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     color: ButtonColorType;
     variant: VariantType;
-    fullwidth: boolean;
+    fullWidth: boolean;
     as?: ElementType;
     to?: string;
 };
 
-function Button({children, color, variant, fullwidth, ...props}: Props) {
+function Button({children, color, variant, fullWidth, ...props}: Props) {
     return (
-        <StyledButton $color={color} $variant={variant} $fullwidth={fullwidth} {...(props as any)}>
+        <StyledButton $color={color} $variant={variant} $fullWidth={fullWidth} {...(props as any)}>
             {children}
         </StyledButton>
     );
