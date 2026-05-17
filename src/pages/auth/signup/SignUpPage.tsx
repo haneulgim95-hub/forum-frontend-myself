@@ -7,6 +7,14 @@ import Button from "../../../components/common/button/Button.tsx";
 import { useNavigate } from "react-router";
 import axiosInstance from "../../../api/axiosInstance.ts";
 import axios from "axios";
+import {
+    AuthContainer,
+    AuthFormBox,
+    AuthFormCard,
+    AuthRootErrorMessage,
+    AuthSubTitle,
+    AuthTitle,
+} from "../../../components/auth/auth.style.ts";
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -44,10 +52,10 @@ function SignUpPage() {
 
     return (
         <AuthContainer>
-            <FormCard onSubmit={handleSubmit(onSubmit)}>
-                <Title>회원가입</Title>
-                <SubTitle>토론 대난투에 오신것을 환영합니다.</SubTitle>
-                <FormBox>
+            <AuthFormCard onSubmit={handleSubmit(onSubmit)}>
+                <AuthTitle>회원가입</AuthTitle>
+                <AuthSubTitle>토론 대난투에 오신것을 환영합니다.</AuthSubTitle>
+                <AuthFormBox>
                     <InputGroup>
                         <Label htmlFor={"username"}>아이디</Label>
                         <Input
@@ -142,8 +150,8 @@ function SignUpPage() {
                         </Select>
                         {errors.gender && <ErrorMessage>{errors.gender.message}</ErrorMessage>}
                     </InputGroup>
-                </FormBox>
-                {errors.root && <RootErrorMessage>{errors.root.message}</RootErrorMessage>}
+                </AuthFormBox>
+                {errors.root && <AuthRootErrorMessage>{errors.root.message}</AuthRootErrorMessage>}
                 <Button
                     color={"primary"}
                     variant={"contained"}
@@ -151,49 +159,13 @@ function SignUpPage() {
                     fullwidth={true}>
                     회원가입
                 </Button>
-            </FormCard>
+            </AuthFormCard>
         </AuthContainer>
     );
 }
 
 export default SignUpPage;
 
-const AuthContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const FormCard = styled.form`
-    width: 100%;
-    max-width: 480px;
-    background-color: ${props => props.theme.colors.background.paper};
-    border-radius: 16px;
-    border: 1px solid ${props => props.theme.colors.divider};
-    padding: 40px 20px;
-`;
-
-const Title = styled.h1`
-    font-size: 28px;
-    font-weight: 800;
-    color: ${props => props.theme.colors.primary};
-    margin-bottom: 8px;
-    text-align: center;
-`;
-
-const SubTitle = styled.h6`
-    font-size: 15px;
-    color: ${props => props.theme.colors.text.disabled};
-    text-align: center;
-    margin-bottom: 32px;
-`;
-
-const FormBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 50px;
-`;
 
 const InputGroup = styled.div`
     display: flex;
@@ -253,10 +225,3 @@ const ErrorMessage = styled.span`
     font-weight: 500;
 `;
 
-const RootErrorMessage = styled.p`
-    font-size: 14px;
-    text-align: center;
-    color: ${props => props.theme.colors.error};
-    font-weight: 500;
-    margin-bottom: 50px;
-`;
