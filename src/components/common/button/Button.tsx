@@ -7,9 +7,13 @@ type VariantType = "contained" | "text" | "icon";
 const StyledButton = styled.button<{
     $color: ButtonColorType;
     $variant: VariantType;
-    $fullwidth: boolean;
+    $fullwidth?: boolean;
 }>`
     width: ${props => props.$fullwidth ? "100%" : "auto"};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: ${props => props.$variant === "icon" ? "1" : "auto"};
     font-size: 14px;
     font-weight: 600;
     color: ${props => (props.$variant === "contained" ? "#fff" : props.theme.colors.text.default)};
@@ -31,7 +35,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     color: ButtonColorType;
     variant: VariantType;
-    fullWidth: boolean;
+    fullWidth?: boolean;
     as?: ElementType;
     to?: string;
 };

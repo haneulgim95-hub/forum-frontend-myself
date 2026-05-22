@@ -14,8 +14,10 @@ import axiosInstance from "../../../api/axiosInstance.ts";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import InputGroup from "../../../components/common/input/InputGroup.tsx";
+import { useAuthStore } from "../../../stores/auth/authStore.ts";
 
 function SignInPage() {
+    const { login } = useAuthStore();
     const navigate = useNavigate();
 
     const {
@@ -42,7 +44,7 @@ function SignInPage() {
 
             const { user, token } = response.data.data;
 
-            localStorage.setItem("accessToken", token);
+            login(user, token);
 
             alert("로그인에 성공했습니다.");
             navigate("/");
