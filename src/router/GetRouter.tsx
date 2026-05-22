@@ -1,8 +1,39 @@
-import {createBrowserRouter} from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import MainLayout from "../layouts/MainLayout.tsx";
 import HomePage from "../pages/HomePage.tsx";
 import SignInPage from "../pages/auth/signin/SignInPage.tsx";
 import SignUpPage from "../pages/auth/signup/SignUpPage.tsx";
+import AdminLayout from "../layouts/AdminLayout.tsx";
+import { useAuthStore } from "../stores/auth/authStore.ts";
+import { Role } from "../types/user.type.ts";
+import AdminCategoryList from "../pages/admin/category/AdminCategoryList.tsx";
+
+const adminLoader = () => {
+    const {isLoggedIn, user} = useAuthStore.getState();
+    
+    if (!isLoggedIn) {
+        alert("로그인을 먼저 진행해주세요.");
+        redirect("/auth/signin");
+    }
+
+    if (user?.role !== Role.ADMIN) {
+        alert("관리자만 접근할 수 있는 페이지입니다..");
+        redirect("/");
+    }
+    return null;
+};
+
+const guestLoader = () => {
+    const { isLoggedIn } = useAuthStore.getState();
+
+    if (isLoggedIn) {
+        redirect("/");
+    }
+
+    return null;
+};
+
+
 
 const router = createBrowserRouter([
     {
@@ -10,9 +41,19 @@ const router = createBrowserRouter([
         element: <MainLayout/>,
         children: [
             { index:true, element: <HomePage/>},
-            { path: "auth", children: [
+            { path: "auth", loader: guestLoader, children: [
                     { path: "signin", element: <SignInPage/>},
                     { path: "signup", element: <SignUpPage/>}
+                ]}
+        ]
+    },
+    {
+        path: "/admin",
+        loader: adminLoader,
+        element: <AdminLayout/>,
+        children: [
+            { path: "category", children: [
+                    { index: true, element: <AdminCategoryList/>}
                 ]}
         ]
     }
