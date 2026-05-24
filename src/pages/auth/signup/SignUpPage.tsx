@@ -101,13 +101,6 @@ function SignUpPage() {
                         type={"email"}
                     />
                     <InputGroup
-                        label={"이메일"}
-                        id={"email"}
-                        errorMessage={errors.email?.message}
-                        registerObj={register("email")}
-                        type={"email"}
-                    />
-                    <InputGroup
                         label={"전화번호"}
                         id={"phoneNumber"}
                         errorMessage={errors.phoneNumber?.message}
@@ -136,7 +129,7 @@ function SignUpPage() {
                     color={"primary"}
                     variant={"contained"}
                     disabled={isSubmitting}
-                    fullwidth={true}>
+                    fullWidth={true}>
                     회원가입
                 </Button>
             </AuthFormCard>

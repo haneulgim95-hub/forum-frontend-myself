@@ -7,9 +7,9 @@ type VariantType = "contained" | "text" | "icon";
 const StyledButton = styled.button<{
     $color: ButtonColorType;
     $variant: VariantType;
-    $fullwidth?: boolean;
+    $fullWidth?: boolean;
 }>`
-    width: ${props => props.$fullwidth ? "100%" : "auto"};
+    width: ${props => props.$fullWidth ? "100%" : "auto"};
     display: flex;
     align-items: center;
     justify-content: center;

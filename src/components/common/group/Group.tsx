@@ -1,5 +1,4 @@
-import type {InputHTMLAttributes} from "react";
-import type {UseFormRegisterReturn} from "react-hook-form";
+import styled from "styled-components";
 
 export const StyledInputGroup = styled.div`
     display: flex;

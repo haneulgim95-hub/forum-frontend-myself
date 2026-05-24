@@ -90,7 +90,7 @@ function SignInPage() {
                     color={"primary"}
                     variant={"contained"}
                     disabled={isSubmitting}>
-                    회원가입
+                    로그인
                 </Button>
             </AuthFormCard>
         </AuthContainer>
