@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 import adminCategoryApi from "../../../api/admin/adminCategoryApi.ts";
-import type { Category } from "../../../types/category.type.ts";
-import styled from "styled-components";
+import { type Category, CategoryStatus } from "../../../types/category.type.ts";
 import Button from "../../../components/common/button/Button.tsx";
 import { Link } from "react-router";
 import Card from "../../../components/common/card/Card.tsx";
+import {
+    AdminContainer,
+    AdminLoadingText,
+    AdminPageHeader,
+    AdminTable,
+    AdminTableWrapper,
+    AdminTd,
+    AdminTh,
+    AdminTitle,
+} from "../../../components/admin/admin.style.tsx";
+import Badge from "../../../components/common/badge/Badge.tsx";
 
 function AdminCategoryList() {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -69,7 +79,18 @@ function AdminCategoryList() {
                                     <tr key={item.id}>
                                         <AdminTd>{item.id}</AdminTd>
                                         <AdminTd>{item.name}</AdminTd>
-                                        <AdminTd>{item.status}</AdminTd>
+                                        <AdminTd>
+                                            <Badge
+                                                color={
+                                                    item.status === CategoryStatus.ACTIVE
+                                                        ? "success"
+                                                        : "secondary"
+                                                }>
+                                                {item.status === CategoryStatus.ACTIVE
+                                                    ? "활성"
+                                                    : "비활성"}
+                                            </Badge>
+                                        </AdminTd>
                                         <AdminTd>기능</AdminTd>
                                     </tr>
                                 ))}
@@ -83,56 +104,3 @@ function AdminCategoryList() {
 }
 
 export default AdminCategoryList;
-
-const AdminContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-`;
-
-const AdminPageHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-`;
-
-const AdminTitle = styled.h2`
-    font-size: 24px;
-    font-weight: 700;
-`;
-
-const AdminLoadingText = styled.div`
-    text-align: center;
-    padding: 40px;
-    color: ${props => props.theme.colors.text.disabled};
-`;
-
-const AdminTableWrapper = styled.div`
-    overflow-x: auto;
-`;
-
-const AdminTable = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-`;
-
-const AdminTh = styled.th<{ $width?: string }>`
-    width: ${props => props.$width};
-    text-align: left;
-    padding: 12px 16px;
-    background-color: ${props => props.theme.colors.background.default};
-    color: ${props => props.theme.colors.text.disabled};
-    font-size: 13px;
-    font-weight: 600;
-    border-bottom: 2px solid ${props => props.theme.colors.divider};
-`;
-
-const AdminTd = styled.td`
-    padding: 16px;
-    font-size: 14px;
-    border-bottom: 1px solid ${props => props.theme.colors.divider};
-    vertical-align: middle;
-    color: ${props => props.theme.colors.text.disabled};
-`;

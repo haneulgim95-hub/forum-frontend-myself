@@ -7,6 +7,7 @@ import AdminLayout from "../layouts/AdminLayout.tsx";
 import { useAuthStore } from "../stores/auth/authStore.ts";
 import { Role } from "../types/user.type.ts";
 import AdminCategoryList from "../pages/admin/category/AdminCategoryList.tsx";
+import AdminCategoryCreatePage from "../pages/admin/category/create/AdminCategoryCreatePage.tsx";
 
 const adminLoader = () => {
     const {isLoggedIn, user} = useAuthStore.getState();
@@ -53,7 +54,8 @@ const router = createBrowserRouter([
         element: <AdminLayout/>,
         children: [
             { path: "category", children: [
-                    { index: true, element: <AdminCategoryList/>}
+                    { index: true, element: <AdminCategoryList/>},
+                    { path: "create", element: <AdminCategoryCreatePage/>}
                 ]}
         ]
     }
