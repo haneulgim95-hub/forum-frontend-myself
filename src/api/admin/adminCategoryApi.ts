@@ -12,4 +12,9 @@ const createCategory = async (data: AdminCreateCategoryInputType): Promise<Categ
     return response.data.data;
 }
 
-export default {fetchCategoryList , createCategory};
+const toggleCategoryStatus = async (id: number): Promise<Category> => {
+    const response = await axiosInstance.patch(`/admin/category/${id}/status`);
+    return response.data.data;
+}
+
+export default {fetchCategoryList , createCategory, toggleCategoryStatus};
