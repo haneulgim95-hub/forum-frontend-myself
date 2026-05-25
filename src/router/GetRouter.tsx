@@ -9,10 +9,12 @@ import { Role } from "../types/user.type.ts";
 import AdminCategoryList from "../pages/admin/category/AdminCategoryList.tsx";
 import AdminCategoryCreatePage from "../pages/admin/category/create/AdminCategoryCreatePage.tsx";
 import AdminCategoryEditPage from "../pages/admin/category/edit/AdminCategoryEditPage.tsx";
+import AdminUserListPage from "../pages/admin/user/AdminUserListPage.tsx";
+import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.tsx";
 
 const adminLoader = () => {
-    const {isLoggedIn, user} = useAuthStore.getState();
-    
+    const { isLoggedIn, user } = useAuthStore.getState();
+
     if (!isLoggedIn) {
         alert("로그인을 먼저 진행해주세요.");
         redirect("/auth/signin");
@@ -35,32 +37,44 @@ const guestLoader = () => {
     return null;
 };
 
-
-
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout/>,
+        element: <MainLayout />,
         children: [
-            { index:true, element: <HomePage/>},
-            { path: "auth", loader: guestLoader, children: [
-                    { path: "signin", element: <SignInPage/>},
-                    { path: "signup", element: <SignUpPage/>}
-                ]}
-        ]
+            { index: true, element: <HomePage /> },
+            {
+                path: "auth",
+                loader: guestLoader,
+                children: [
+                    { path: "signin", element: <SignInPage /> },
+                    { path: "signup", element: <SignUpPage /> },
+                ],
+            },
+        ],
     },
     {
         path: "/admin",
         loader: adminLoader,
-        element: <AdminLayout/>,
+        element: <AdminLayout />,
         children: [
-            { path: "category", children: [
-                    { index: true, element: <AdminCategoryList/>},
-                    { path: "create", element: <AdminCategoryCreatePage/>},
-                    { path: "edit/:id", element: <AdminCategoryEditPage/>}
-                ]}
-        ]
-    }
+            {
+                path: "category",
+                children: [
+                    { index: true, element: <AdminCategoryList /> },
+                    { path: "create", element: <AdminCategoryCreatePage /> },
+                    { path: "edit/:id", element: <AdminCategoryEditPage /> },
+                ],
+            },
+            {
+                path: "user",
+                children: [
+                    { index: true, element: <AdminUserListPage /> },
+                    { path: "create", element: <AdminUserCreatePage /> },
+                ],
+            },
+        ],
+    },
 ]);
 
 export default router;
