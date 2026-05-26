@@ -22,10 +22,16 @@ function AdminUserListPage() {
     const [list, setList] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const loadUsers = async () => {
+    const SIZE = 20;
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const totalPage = Math.ceil(total / SIZE);
+
+    const loadUsers = async (page: number) => {
         try {
-            const result = await adminUserApi.fetchUserList();
-            setList(result);
+            const result = await adminUserApi.fetchUserList(page, SIZE);
+            setList(result.list);
+            setTotal(result.total);
         } catch (error) {
             console.log(error);
             alert("유저 목록을 불러오는데 실패했습니다.");
@@ -36,8 +42,8 @@ function AdminUserListPage() {
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        loadUsers().then(() => {});
-    }, []);
+        loadUsers(page).then(() => {});
+    }, [page]);
 
     const handleDelete = async (id: number) => {
         if (!confirm("정말 이 유저를 삭제(탈퇴) 처리 하시겠습니까?")) {
@@ -47,12 +53,16 @@ function AdminUserListPage() {
         try {
             await adminUserApi.deleteUser(id);
             alert("사용자 정보가 성공적으로 삭제되었습니다.");
-            loadUsers().then(() => {});
+            loadUsers(page).then(() => {});
         } catch (error) {
             console.log(error);
             alert("사용자 삭제 중 오류가 발생했습니다.");
         }
-    }
+    };
+
+    const handlePageChange = (page: number) => {
+        setPage(page);
+    };
 
     return (
         <AdminContainer>
@@ -140,6 +150,33 @@ function AdminUserListPage() {
                             </tbody>
                         </AdminTable>
                     </AdminTableWrapper>
+                )}
+                {total > 0 && (
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginTop: "20px",
+                        }}>
+                        <Button
+                            color={"primary"}
+                            variant={"text"}
+                            disabled={page === 1}
+                            onClick={() => handlePageChange(page - 1)}>
+                            이전
+                        </Button>
+                        <Button
+                            color={"primary"}
+                            variant={"text"}
+                            disabled={page === totalPage}
+                            onClick={() => {
+                                handlePageChange(page + 1);
+                            }}>
+                            다음
+                        </Button>
+                    </div>
                 )}
             </Card>
         </AdminContainer>
