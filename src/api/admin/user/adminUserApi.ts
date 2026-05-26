@@ -1,9 +1,15 @@
 import type { User } from "../../../types/user.type.ts";
 import axiosInstance from "../../axiosInstance.ts";
 import type { AdminCreateUserInputType } from "../../../schemas/admin/user/adminCreateUserSchema.ts";
+import type { AdminUpdateUserInputType } from "../../../schemas/admin/user/adminUpdateUserSchema.ts";
 
 const fetchUserList = async (): Promise<User[]> => {
     const response = await axiosInstance.get("/admin/user/list");
+    return response.data.data;
+};
+
+const fetchUserById = async (id: number): Promise<User> => {
+    const response = await axiosInstance.get(`/admin/user/${id}`);
     return response.data.data;
 };
 
@@ -12,4 +18,9 @@ const createUser = async (input: AdminCreateUserInputType): Promise<User> => {
     return response.data.data;
 };
 
-export default { fetchUserList, createUser };
+const updatedUser = async (id: number, input: AdminUpdateUserInputType): Promise<User> => {
+    const response = await axiosInstance.patch(`/admin/user/${id}`, input);
+    return response.data.data;
+};
+
+export default { fetchUserList, createUser, updatedUser, fetchUserById };

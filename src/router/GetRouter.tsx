@@ -11,6 +11,7 @@ import AdminCategoryCreatePage from "../pages/admin/category/create/AdminCategor
 import AdminCategoryEditPage from "../pages/admin/category/edit/AdminCategoryEditPage.tsx";
 import AdminUserListPage from "../pages/admin/user/AdminUserListPage.tsx";
 import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.tsx";
+import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <AdminUserListPage /> },
                     { path: "create", element: <AdminUserCreatePage /> },
+                    { path: ":id", element: <AdminUserUpdatePage/>}
                 ],
             },
         ],
