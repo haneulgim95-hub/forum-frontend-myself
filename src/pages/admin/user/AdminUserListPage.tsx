@@ -15,27 +15,44 @@ import {
 import Button from "../../../components/common/button/Button.tsx";
 import { Link } from "react-router";
 import Badge from "../../../components/common/badge/Badge.tsx";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash } from "react-icons/fi";
 import Card from "../../../components/common/card/Card.tsx";
 
 function AdminUserListPage() {
     const [list, setList] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const loadUsers = async () => {
+        try {
+            const result = await adminUserApi.fetchUserList();
+            setList(result);
+        } catch (error) {
+            console.log(error);
+            alert("유저 목록을 불러오는데 실패했습니다.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const loadUsers = async () => {
-            try {
-                const result = await adminUserApi.fetchUserList();
-                setList(result);
-            } catch (error) {
-                console.log(error);
-                alert("유저 목록을 불러오는데 실패했습니다.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         loadUsers().then(() => {});
     }, []);
+
+    const handleDelete = async (id: number) => {
+        if (!confirm("정말 이 유저를 삭제(탈퇴) 처리 하시겠습니까?")) {
+            return;
+        }
+
+        try {
+            await adminUserApi.deleteUser(id);
+            alert("사용자 정보가 성공적으로 삭제되었습니다.");
+            loadUsers().then(() => {});
+        } catch (error) {
+            console.log(error);
+            alert("사용자 삭제 중 오류가 발생했습니다.");
+        }
+    }
 
     return (
         <AdminContainer>
@@ -108,6 +125,14 @@ function AdminUserListPage() {
                                                     to={`/admin/user/${item.id}`}>
                                                     <FiEdit size={18} />
                                                 </Button>
+                                                {!item.deletedAt && (
+                                                    <Button
+                                                        color={"primary"}
+                                                        variant={"icon"}
+                                                        onClick={() => handleDelete(item.id)}>
+                                                        <FiTrash size={18} />
+                                                    </Button>
+                                                )}
                                             </AdminButtonGroup>
                                         </AdminTd>
                                     </tr>

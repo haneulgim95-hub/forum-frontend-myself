@@ -38,7 +38,7 @@ function AdminUserCreatePage() {
         try {
             await adminUserApi.createUser(data);
             alert("사용자를 성공적으로 추가했습니다.");
-            navigate("/admin/user/create");
+            navigate("/admin/user");
         } catch (error) {
             console.log(error);
             let errorMessage = "회원가입 중 오류가 발생했습니다";
