@@ -57,8 +57,9 @@ function AdminUserCreatePage() {
                 <AdminTitle>새 사용자 추가</AdminTitle>
             </AdminPageHeader>
             <Card>
-                <AdminForm onSubmit={handleSubmit(onSubmit)}>
+                <AdminForm onSubmit={handleSubmit(onSubmit)} $wrap={true}>
                     <InputGroup
+                        wrap={true}
                         id={"username"}
                         label={"아이디"}
                         registerObj={register("username")}
@@ -66,6 +67,7 @@ function AdminUserCreatePage() {
                         errorMessage={errors.username?.message}
                     />
                     <InputGroup
+                        wrap={true}
                         id={"password"}
                         label={"비밀번호"}
                         registerObj={register("password")}
@@ -74,12 +76,14 @@ function AdminUserCreatePage() {
                         type="password"
                     />
                     <InputGroup
+                        wrap={true}
                         id={"name"}
                         label={"이름"}
                         registerObj={register("name")}
                         errorMessage={errors.name?.message}
                     />
                     <InputGroup
+                        wrap={true}
                         id={"nickname"}
                         label={"닉네임"}
                         registerObj={register("nickname")}
@@ -87,6 +91,7 @@ function AdminUserCreatePage() {
                         errorMessage={errors.nickname?.message}
                     />
                     <InputGroup
+                        wrap={true}
                         id={"email"}
                         label={"이메일"}
                         registerObj={register("email")}
@@ -94,6 +99,7 @@ function AdminUserCreatePage() {
                         type="email"
                     />
                     <InputGroup
+                        wrap={true}
                         id={"phoneNumber"}
                         label={"전화번호"}
                         registerObj={register("phoneNumber")}
@@ -101,6 +107,7 @@ function AdminUserCreatePage() {
                         type={"tel"}
                     />
                     <InputGroup
+                        wrap={true}
                         id={"birthdate"}
                         label={"생년월일"}
                         registerObj={register("birthdate")}
@@ -108,6 +115,7 @@ function AdminUserCreatePage() {
                         type={"date"}
                     />
                     <SelectGroup
+                        wrap={true}
                         label={"성별"}
                         id={"gender"}
                         errorMessage={errors.gender?.message}
@@ -117,6 +125,7 @@ function AdminUserCreatePage() {
                         <option value={Gender.FEMALE}>여성</option>
                     </SelectGroup>
                     <SelectGroup
+                        wrap={true}
                         label={"종류"}
                         id={"role"}
                         errorMessage={errors.role?.message}
@@ -125,22 +134,24 @@ function AdminUserCreatePage() {
                         <option value={Role.ADMIN}>관리자</option>
                         <option value={Role.USER}>일반 사용자</option>
                     </SelectGroup>
-                    {errors.root && (
-                        <AuthRootErrorMessage>{errors.root.message}</AuthRootErrorMessage>
-                    )}
+                    <div style={{ width: "100%", gap: "32px" }}>
+                        {errors.root && (
+                            <AuthRootErrorMessage>{errors.root.message}</AuthRootErrorMessage>
+                        )}
 
-                    <AdminButtonGroup>
-                        <Button color={"primary"} variant={"text"} as={Link} to={"/admin/user"}>
-                            취소
-                        </Button>
-                        <Button
-                            color={"primary"}
-                            variant={"contained"}
-                            disabled={isSubmitting}
-                            type={"submit"}>
-                            등록
-                        </Button>
-                    </AdminButtonGroup>
+                        <AdminButtonGroup>
+                            <Button color={"primary"} variant={"text"} as={Link} to={"/admin/user"}>
+                                취소
+                            </Button>
+                            <Button
+                                color={"primary"}
+                                variant={"contained"}
+                                disabled={isSubmitting}
+                                type={"submit"}>
+                                등록
+                            </Button>
+                        </AdminButtonGroup>
+                    </div>
                 </AdminForm>
             </Card>
         </AdminContainer>

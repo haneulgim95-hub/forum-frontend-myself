@@ -9,10 +9,11 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
     errorMessage?: string;
     registerObj?: UseFormRegisterReturn;
     children: ReactNode;
+    wrap?: boolean;
 }
 
-function SelectGroup({label, id, errorMessage, registerObj, children, ...props}: Props) {
-    return <StyledInputGroup>
+function SelectGroup({label, id, errorMessage, registerObj, children, wrap, ...props}: Props) {
+    return <StyledInputGroup $wrap={wrap}>
         {label && <Label htmlFor={id}>{label}</Label>}
         <Select id={id} {...props} $hasError={!!errorMessage} {...registerObj}>{children}</Select>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

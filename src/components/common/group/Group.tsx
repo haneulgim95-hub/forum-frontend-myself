@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-export const StyledInputGroup = styled.div`
+export const StyledInputGroup = styled.div<{$wrap?: boolean}>`
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: ${props => props.$wrap ? "calc((100% - 32px) / 2)" : "auto"};
 `;
 
 export const Label = styled.label`

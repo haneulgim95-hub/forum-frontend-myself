@@ -53,9 +53,10 @@ export const AdminTd = styled.td`
     color: ${props => props.theme.colors.text.disabled};
 `;
 
-export const AdminForm = styled.form`
+export const AdminForm = styled.form<{$wrap?: boolean}>`
     display: flex;
-    flex-direction: column;
+    flex-direction: ${props => props.$wrap ? "row" : "column"};
+    flex-wrap: ${props => props.$wrap ? "wrap" : "nowrap"};
     gap: 32px;
 `;
 

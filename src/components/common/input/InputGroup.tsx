@@ -8,11 +8,12 @@ interface Props extends InputHTMLAttributes<HTMLInputElement>{
     id?: string;
     errorMessage?: string;
     registerObj?: UseFormRegisterReturn;
+    wrap?: boolean;
 }
 
-function InputGroup({label, id, errorMessage, registerObj ,...props}: Props) {
+function InputGroup({label, id, errorMessage, registerObj, wrap, ...props}: Props) {
     return (
-        <StyledInputGroup>
+        <StyledInputGroup $wrap={wrap}>
             {label && <Label htmlFor={id}>{label}</Label>}
             <Input id={id} {...props} $hasError={!!errorMessage} {...registerObj}></Input>
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
