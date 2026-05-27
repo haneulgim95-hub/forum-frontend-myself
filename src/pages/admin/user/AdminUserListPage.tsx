@@ -13,7 +13,7 @@ import {
     AdminTitle,
 } from "../../../components/admin/admin.style.tsx";
 import Button from "../../../components/common/button/Button.tsx";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import Badge from "../../../components/common/badge/Badge.tsx";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import Card from "../../../components/common/card/Card.tsx";
@@ -22,8 +22,10 @@ function AdminUserListPage() {
     const [list, setList] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get("page")) || 1;
+
     const SIZE = 20;
-    const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const totalPage = Math.ceil(total / SIZE);
 
@@ -41,6 +43,8 @@ function AdminUserListPage() {
     };
 
     useEffect(() => {
+        window.scrollTo({top: 0, behavior: "instant"});
+
         // eslint-disable-next-line react-hooks/set-state-in-effect
         loadUsers(page).then(() => {});
     }, [page]);
@@ -61,7 +65,8 @@ function AdminUserListPage() {
     };
 
     const handlePageChange = (page: number) => {
-        setPage(page);
+        searchParams.set("page", page.toString());
+        setSearchParams(searchParams);
     };
 
     return (
