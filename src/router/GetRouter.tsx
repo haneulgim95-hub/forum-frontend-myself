@@ -12,6 +12,7 @@ import AdminCategoryEditPage from "../pages/admin/category/edit/AdminCategoryEdi
 import AdminUserListPage from "../pages/admin/user/AdminUserListPage.tsx";
 import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.tsx";
 import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.tsx";
+import PostListPage from "../pages/post/PostListPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
             { index: true, element: <HomePage /> },
+            { path: "category", children: [{path: ":categoryId", element: <PostListPage/>}]},
             {
                 path: "auth",
                 loader: guestLoader,
