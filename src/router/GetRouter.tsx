@@ -13,6 +13,7 @@ import AdminUserListPage from "../pages/admin/user/AdminUserListPage.tsx";
 import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.tsx";
 import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.tsx";
 import PostListPage from "../pages/post/PostListPage.tsx";
+import PostCreatePage from "../pages/post/create/PostCreatePage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -39,13 +40,28 @@ const guestLoader = () => {
     return null;
 };
 
+const userLoader = () => {
+    const { isLoggedIn } = useAuthStore.getState();
+
+    if (!isLoggedIn) {
+        redirect("/");
+    }
+    return null;
+};
+
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: "category", children: [{path: ":categoryId", element: <PostListPage/>}]},
+            { path: "category", children: [{ path: ":categoryId", element: <PostListPage /> }] },
+            {
+                path: "post",
+                children: [
+                    { path: "create/:categoryId", loader: userLoader, element: <PostCreatePage /> },
+                ],
+            },
             {
                 path: "auth",
                 loader: guestLoader,
@@ -74,7 +90,7 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <AdminUserListPage /> },
                     { path: "create", element: <AdminUserCreatePage /> },
-                    { path: ":id", element: <AdminUserUpdatePage/>}
+                    { path: ":id", element: <AdminUserUpdatePage /> },
                 ],
             },
         ],
