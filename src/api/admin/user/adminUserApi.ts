@@ -12,4 +12,6 @@ const createUser = async (input: AdminCreateUserInputType): Promise<User> => {
     return response.data.data;
 };
 
+const
+
 export default { fetchUserList, createUser };

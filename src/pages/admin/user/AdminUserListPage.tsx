@@ -15,7 +15,7 @@ import {
 import Button from "../../../components/common/button/Button.tsx";
 import { Link } from "react-router";
 import Badge from "../../../components/common/badge/Badge.tsx";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash } from "react-icons/fi";
 import Card from "../../../components/common/card/Card.tsx";
 
 function AdminUserListPage() {
@@ -36,6 +36,14 @@ function AdminUserListPage() {
         };
         loadUsers().then(() => {});
     }, []);
+
+    const handleDelete = (id: number) => {
+        try {
+
+        } catch (error) {
+
+        }
+    };
 
     return (
         <AdminContainer>
@@ -108,6 +116,7 @@ function AdminUserListPage() {
                                                     to={`/admin/user/${item.id}`}>
                                                     <FiEdit size={18} />
                                                 </Button>
+                                                {!item.deletedAt && <Button color={"error"} variant={"icon"} onClick={() => handleDelete(item.id)}><FiTrash size={18}/></Button>}
                                             </AdminButtonGroup>
                                         </AdminTd>
                                     </tr>
