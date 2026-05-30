@@ -14,6 +14,7 @@ import {
 } from "../../components/post/post.style.tsx";
 import Button from "../../components/common/button/Button.tsx";
 import { useAuthStore } from "../../stores/auth/authStore.ts";
+import Pagination from "../../components/common/pagination/Pagination.tsx";
 
 function PostListPage() {
     const { isLoggedIn } = useAuthStore();
@@ -44,6 +45,11 @@ function PostListPage() {
 
         loadList().then(() => {});
     }, [page, size, categoryId]);
+
+    const handlePageChange = (page: number) => {
+        searchParams.set("page", page.toString());
+        setSearchParams(searchParams);
+    };
 
     return (
         <PostContainer>
@@ -87,6 +93,7 @@ function PostListPage() {
                     </BoardTable>
                 )}
             </BoardWrapper>
+            {total > 0 && (<Pagination currentPage={page} totalPage={totalPage} onPageChange={handlePageChange}/>)}
         </PostContainer>
     );
 }
