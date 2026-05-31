@@ -12,6 +12,9 @@ import AdminCategoryEditPage from "../pages/admin/category/edit/AdminCategoryEdi
 import AdminUserListPage from "../pages/admin/user/AdminUserListPage.tsx";
 import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.tsx";
 import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.tsx";
+import PostListPage from "../pages/post/PostListPage.tsx";
+import PostCreatePage from "../pages/post/create/PostCreatePage.tsx";
+import PostDetailPage from "../pages/post/detail/PostDetailPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -38,6 +41,14 @@ const guestLoader = () => {
     return null;
 };
 
+const userLoader = () => {
+    const { isLoggedIn } = useAuthStore.getState();
+    if (!isLoggedIn) {
+        redirect("/");
+    }
+    return null;
+};
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -51,6 +62,17 @@ const router = createBrowserRouter([
                     { path: "signin", element: <SignInPage /> },
                     { path: "signup", element: <SignUpPage /> },
                 ],
+            },
+            {
+                path: "post",
+                children: [
+                    { path: ":id", element: <PostDetailPage/>},
+                    { path: "create/:categoryId", loader: userLoader, element: <PostCreatePage /> },
+                ],
+            },
+            {
+                path: "category",
+                children: [{ path: ":categoryId", element: <PostListPage /> }],
             },
         ],
     },
@@ -72,7 +94,7 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <AdminUserListPage /> },
                     { path: "create", element: <AdminUserCreatePage /> },
-                    { path: ":id", element: <AdminUserUpdatePage/>}
+                    { path: ":id", element: <AdminUserUpdatePage /> },
                 ],
             },
         ],
