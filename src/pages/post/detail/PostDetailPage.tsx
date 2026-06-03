@@ -92,7 +92,8 @@ function PostDetailPage() {
         setIsCanceling(true);
 
         try {
-
+            await postApi.cancelVotePost(Number(postId));
+            await loadPost();
         } catch (error) {
             console.log("투표취소실패: ", error);
             alert("투표 취소 처리 중 오류가 발생했습니다.");
@@ -187,7 +188,7 @@ function PostDetailPage() {
                     </BattleGround>
                 )}
 
-                <AdminButtonGroup>
+                <AdminButtonGroup style={{marginTop: "40px"}}>
                     <Button color={"secondary"} variant={"contained"} onClick={() => navigate(-1)}>
                         목록으로
                     </Button>
