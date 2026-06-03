@@ -10,6 +10,14 @@ export interface Post {
     views: number;
     userId: number;
     categoryId: number;
+    option1Text: string | null;
+    option2Text: string | null;
+    vote: {
+        option1Count: number;
+        option2Count: number;
+        totalCount: number;
+        hasVoted: boolean;
+    } | null;
 
     user: Pick<User, "id" | "nickname" | "email">;
 }

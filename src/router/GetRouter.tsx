@@ -14,6 +14,7 @@ import AdminUserCreatePage from "../pages/admin/user/create/AdminUserCreatePage.
 import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.tsx";
 import PostListPage from "../pages/post/PostListPage.tsx";
 import PostCreatePage from "../pages/post/create/PostCreatePage.tsx";
+import PostDetailPage from "../pages/post/detail/PostDetailPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
                 path: "post",
                 children: [
                     { path: "create/:categoryId", loader: userLoader, element: <PostCreatePage /> },
+                    { path: ":postId", element: <PostDetailPage/>},
                 ],
             },
             {

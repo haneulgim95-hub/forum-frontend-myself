@@ -8,9 +8,18 @@ const fetchPostListByCategory = async (categoryId: number, page: number, size: n
     return response.data.data;
 };
 
+const fetchPostById = async (postId: number): Promise<Post> => {
+    const response = await axiosInstance.get(`/post/${postId}`);
+    return response.data.data;
+};
+
 const createPost = async (data: CreatePostInputType): Promise<Post> => {
     const response = await axiosInstance.post("/post/create", data);
     return response.data.data;
 };
 
-export default {fetchPostListByCategory, createPost};
+const votePost = async (postId: number, option: number) => {
+    await axiosInstance.post(`/post/${postId}/vote`, {option});
+};
+
+export default {fetchPostListByCategory, createPost, fetchPostById, votePost};
