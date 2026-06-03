@@ -10,7 +10,11 @@ import { ReplyContainer, ReplyForm, ReplyTitle } from "./reply.style.tsx";
 import { LuMessageSquare } from "react-icons/lu";
 import TextareaGroup from "../common/textarea/TextareaGroup.tsx";
 import { useAuthStore } from "../../stores/auth/authStore.ts";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { Reply } from "../../types/reply.type.ts";
+import { useSearchParams } from "react-router";
+import Pagination from "../common/pagination/Pagination.tsx";
+import { LoadingText } from "./post.style.tsx";
 
 interface Props {
     postId: number;
@@ -18,6 +22,14 @@ interface Props {
 
 function PostReply({ postId }: Props) {
     const { isLoggedIn } = useAuthStore();
+    const [list, setList] = useState<Reply[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = Number(searchParams.get("page")) || 1;
+    const size = Number(searchParams.get("size")) || 10;
+    const [total, setTotal] = useState<number>(0);
+    const totalPage = Math.ceil(total / size);
 
     const {
         register,
@@ -29,22 +41,46 @@ function PostReply({ postId }: Props) {
         mode: "onBlur",
     });
 
+    const loadList = useCallback(async () => {
+        try {
+            const result = await replyApi.fetchRepliesByPostId(postId, page, size);
+            setList(result.list);
+            setTotal(result.total);
+        } catch (error) {
+            console.log("댓글목록조회실패: ", error);
+            alert("댓글 목록을 불러오는데 실패했습니다.");
+        } finally {
+            setIsLoading(false);
+        }
+    }, [page, postId, size]);
 
     const onSubmit = async (data: CreateReplyInputType) => {
         try {
             await replyApi.createReply(postId, data.content);
             reset();
+            await loadList();
         } catch (error) {
             console.log("댓글 등록 실패: ", error);
             alert("댓글 작성 중 오류가 발생했습니다.");
+        } finally {
+            setIsLoading(false);
         }
     };
+
+
 
     useEffect(() => {
         reset({
             postId,
-        })
-    }, [postId, reset])
+        });
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        loadList().then(() => {});
+    }, [loadList, postId, reset]);
+
+    const handlePageChange = (page: number) => {
+        searchParams.set("page", page.toString());
+        setSearchParams(searchParams);
+    };
 
     return (
         <ReplyContainer>
@@ -75,6 +111,24 @@ function PostReply({ postId }: Props) {
                     {isSubmitting ? "등록 중..." : "댓글 등록"}
                 </Button>
             </ReplyForm>
+            {isLoading ? (
+                <LoadingText>댓글 목록을 불러오는중..</LoadingText>
+            ) : (
+                <div>
+                    {list.map(item => (<div key={item.id} style={{display: "flex", justifyContent: "space-between"}}>
+                        <p>{item.content}</p>
+                        <span>{item.user.nickname}</span>
+                    </div>))}
+                </div>
+            )}
+
+            {total > 0 && (
+                <Pagination
+                    currentPage={page}
+                    totalPage={totalPage}
+                    onPageChange={handlePageChange}
+                />
+            )}
         </ReplyContainer>
     );
 }
