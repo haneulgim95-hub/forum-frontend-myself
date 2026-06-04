@@ -1,14 +1,5 @@
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from "url";
+import { ADMIN_TOKEN, BASE_URL } from "./config.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.join(__dirname, "../.env" )});
-
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-const BASE_URL = process.env.VITE_API_BASE_URL;
 const API_URL = BASE_URL + "/admin/user/create";
 
 async function generateUsers(count) {
