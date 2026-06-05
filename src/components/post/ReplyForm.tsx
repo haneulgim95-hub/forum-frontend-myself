@@ -9,14 +9,18 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import replyApi from "../../api/user/replyApi.ts";
 import { useAuthStore } from "../../stores/auth/authStore.ts";
-import { useEffect } from "react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 
 interface Props {
     postId: number;
     loadList: (page: number) => Promise<void>;
+    isEditing?: boolean;
+    replyId?: number;
+    setIsEditing?: Dispatch<SetStateAction<boolean>>;
+    initialContent?: string;
 }
 
-function ReplyForm({ postId, loadList }: Props) {
+function ReplyForm({ postId, loadList, isEditing, replyId, setIsEditing, initialContent }: Props) {
     const { isLoggedIn } = useAuthStore();
 
     const {
@@ -27,24 +31,41 @@ function ReplyForm({ postId, loadList }: Props) {
     } = useForm<CreateReplyInputType>({
         resolver: zodResolver(createReplySchema),
         mode: "onBlur",
+        defaultValues: {
+            content: initialContent
+        }
     });
 
     const onSubmit = async (data: CreateReplyInputType) => {
         try {
-            await replyApi.createReply(postId, data.content);
+            if (isEditing) {
+                if (!replyId || !setIsEditing) {
+                    throw new Error("댓글 ID가 유효하지 않습니다.");
+                }
+                await replyApi.updateReply(replyId, data.content);
+                setIsEditing(false);
+            } else {
+                await replyApi.createReply(postId, data.content);
+            }
             reset();
             await loadList(1);
         } catch (error) {
             console.log("댓글 등록 실패: ", error);
-            alert("댓글 작성 중 오류가 발생했습니다.");
+            alert(
+                isEditing
+                    ? "댓글 수정 중 오류가 발생했습니다."
+                    : "댓글 작성 중 오류가 발생했습니다.",
+            );
         }
     };
 
     useEffect(() => {
-        reset({
-            postId,
-        });
-    }, [postId, reset]);
+        if (!isEditing) {
+            reset({
+                postId,
+            });
+        }
+    }, [postId, reset, isEditing]);
 
     return (
         <StyledReplyForm onSubmit={handleSubmit(onSubmit)}>
@@ -67,7 +88,13 @@ function ReplyForm({ postId, loadList }: Props) {
                 color={isLoggedIn ? "primary" : "secondary"}
                 variant={"contained"}
                 type={"submit"}>
-                {isSubmitting ? "등록 중..." : "댓글 등록"}
+                {isSubmitting
+                    ? isEditing
+                        ? "수정중"
+                        : "등록중"
+                    : isEditing
+                      ? "수정 완료"
+                      : "등록 완료"}
             </Button>
         </StyledReplyForm>
     );

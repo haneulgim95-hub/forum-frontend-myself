@@ -2,6 +2,8 @@ import { ReplyContent, ReplyHeader, StyledReplyItem } from "./reply.style.tsx";
 import type { Reply } from "../../types/reply.type.ts";
 import { useAuthStore } from "../../stores/auth/authStore.ts";
 import replyApi from "../../api/user/replyApi.ts";
+import { useState } from "react";
+import ReplyForm from "./ReplyForm.tsx";
 
 interface Props {
     item: Reply;
@@ -9,6 +11,7 @@ interface Props {
 }
 
 function ReplyItem({ item, loadList }: Props) {
+    const [isEditing, setIsEditing] = useState(false);
     const { user } = useAuthStore();
 
     const handleDeleteReply = async (replyId: number) => {
@@ -39,12 +42,28 @@ function ReplyItem({ item, loadList }: Props) {
                     </span>
                 </div>
                 {user?.id === item.userId && (
-                    <button className={"delete-btn"} onClick={() => handleDeleteReply(item.id)}>
-                        삭제
-                    </button>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                        <button className={"modify-btn"} onClick={() => setIsEditing(!isEditing)}>
+                            수정
+                        </button>
+                        <button className={"delete-btn"} onClick={() => handleDeleteReply(item.id)}>
+                            삭제
+                        </button>
+                    </div>
                 )}
             </ReplyHeader>
-            <ReplyContent>{item.content}</ReplyContent>
+            {isEditing ? (
+                <ReplyForm
+                    postId={item.postId}
+                    loadList={loadList}
+                    isEditing={isEditing}
+                    replyId={item.id}
+                    setIsEditing={setIsEditing}
+                    initialContent={item.content}
+                />
+            ) : (
+                <ReplyContent>{item.content}</ReplyContent>
+            )}
         </StyledReplyItem>
     );
 }
