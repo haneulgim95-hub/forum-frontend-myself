@@ -42,7 +42,7 @@ function ReplyForm({ postId, loadList, isEditing, replyId, setIsEditing, initial
                 if (!replyId || !setIsEditing) {
                     throw new Error("댓글 ID가 유효하지 않습니다.");
                 }
-                await replyApi.updateReply(replyId, data.content);
+                await replyApi.updateReply(data.content, replyId);
                 setIsEditing(false);
             } else {
                 await replyApi.createReply(postId, data.content);
@@ -60,11 +60,11 @@ function ReplyForm({ postId, loadList, isEditing, replyId, setIsEditing, initial
     };
 
     useEffect(() => {
-        if (!isEditing) {
+        // if (!isEditing) {
             reset({
                 postId,
             });
-        }
+        // }
     }, [postId, reset, isEditing]);
 
     return (

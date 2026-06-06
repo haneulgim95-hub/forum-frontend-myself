@@ -21,9 +21,18 @@ const deleteReply = async (replyId: number): Promise<void> => {
     await axiosInstance.delete(`/reply/${replyId}`);
 };
 
-const updateReply = async (replyId: number, content: string): Promise<Reply> => {
-    const response = await axiosInstance.patch(`/reply/${replyId}`, { content });
+// const updateReply = async (replyId: number, content: string): Promise<Reply> => {
+//     const response = await axiosInstance.patch(`/reply/${replyId}`, { content });
+//     return response.data.data;
+// };
+
+const updateReply = async (content: string, replyId: number): Promise<Reply> => {
+    const response = await axiosInstance.patch("reply/update", {
+        content,
+        id: replyId
+    })
     return response.data.data;
 };
+
 
 export default { createReply, getRepliesByPostId, updateReply, deleteReply };
