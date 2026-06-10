@@ -15,6 +15,12 @@ import AdminUserUpdatePage from "../pages/admin/user/update/AdminUserUpdatePage.
 import PostListPage from "../pages/post/PostListPage.tsx";
 import PostCreatePage from "../pages/post/create/PostCreatePage.tsx";
 import PostDetailPage from "../pages/post/detail/PostDetailPage.tsx";
+import AdminNoticeListPage from "../pages/admin/notice/AdminNoticeListPage.tsx";
+import AdminNoticeDetailPage from "../pages/admin/notice/detail/AdminNoticeDetailPage.tsx";
+import AdminCreateNoticePage from "../pages/admin/notice/create/AdminCreateNoticePage.tsx";
+import AdminUpdateNoticePage from "../pages/admin/notice/update/AdminUpdateNoticePage.tsx";
+import NoticeListPage from "../pages/notice/NoticeListPage.tsx";
+import NoticeDetailPage from "../pages/notice/detail/NoticeDetailPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -61,7 +67,7 @@ const router = createBrowserRouter([
                 path: "post",
                 children: [
                     { path: "create/:categoryId", loader: userLoader, element: <PostCreatePage /> },
-                    { path: ":postId", element: <PostDetailPage/>},
+                    { path: ":postId", element: <PostDetailPage /> },
                 ],
             },
             {
@@ -70,6 +76,13 @@ const router = createBrowserRouter([
                 children: [
                     { path: "signin", element: <SignInPage /> },
                     { path: "signup", element: <SignUpPage /> },
+                ],
+            },
+            {
+                path: "notice",
+                children: [
+                    { index: true, element: <NoticeListPage /> },
+                    { path: ":id", element: <NoticeDetailPage /> },
                 ],
             },
         ],
@@ -93,6 +106,15 @@ const router = createBrowserRouter([
                     { index: true, element: <AdminUserListPage /> },
                     { path: "create", element: <AdminUserCreatePage /> },
                     { path: ":id", element: <AdminUserUpdatePage /> },
+                ],
+            },
+            {
+                path: "notice",
+                children: [
+                    { index: true, element: <AdminNoticeListPage /> },
+                    { path: ":id", element: <AdminNoticeDetailPage /> },
+                    { path: "create", element: <AdminCreateNoticePage /> },
+                    { path: "update/:id", element: <AdminUpdateNoticePage /> },
                 ],
             },
         ],

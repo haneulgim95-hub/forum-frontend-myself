@@ -1,0 +1,121 @@
+import { useForm } from "react-hook-form";
+import { type NoticeInputType, noticeSchema } from "../../../../schemas/notice/noticeSchema.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    AdminButtonGroup,
+    AdminContainer,
+    AdminForm,
+    AdminLoadingText,
+    AdminPageHeader,
+    AdminTitle,
+} from "../../../../components/admin/admin.style.tsx";
+import Card from "../../../../components/common/card/Card.tsx";
+import { useEffect, useState } from "react";
+import noticeApi from "../../../../api/user/noticeApi.ts";
+import { useNavigate, useParams } from "react-router";
+import InputGroup from "../../../../components/common/input/InputGroup.tsx";
+import TextareaGroup from "../../../../components/common/textarea/TextareaGroup.tsx";
+import { AuthRootErrorMessage } from "../../../../components/auth/auth.style.tsx";
+import Button from "../../../../components/common/button/Button.tsx";
+import adminNoticeApi from "../../../../api/admin/adminNoticeApi.ts";
+import axios from "axios";
+
+function AdminUpdateNoticePage() {
+    const { id } = useParams<{ id: string }>();
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setError,
+        formState: { errors, isSubmitting },
+    } = useForm<NoticeInputType>({
+        resolver: zodResolver(noticeSchema),
+        mode: "onBlur",
+    });
+
+    useEffect(() => {
+        const loadNotice = async () => {
+            try {
+                const result = await noticeApi.getNoticeById(Number(id));
+                reset({
+                    title: result.title,
+                    content: result.content,
+                });
+            } catch (error) {
+                console.log(error);
+                alert("존재하지 않거나 삭제된 공지사항입니다.");
+                navigate(`/admin/notice/${id}`);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadNotice().then(() => {});
+    }, [id, reset, navigate]);
+
+    const onSubmit = async (data: NoticeInputType) => {
+        try {
+            await adminNoticeApi.updateNotice(Number(id), data);
+            alert("공지사항 업데이트가 완료 되었습니다.");
+            navigate(`/admin/notice/${id}`);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                setError("root", { message: error.response?.data?.message });
+            }
+            setError("root", { message: "공지사항 업데이트에 실패했습니다." });
+        }
+    };
+
+    return (
+        <AdminContainer>
+            <AdminPageHeader>
+                <AdminTitle>공지사항 수정</AdminTitle>
+            </AdminPageHeader>
+
+            <Card>
+                {isLoading ? (
+                    <AdminLoadingText>데이터를 불러오는 중...</AdminLoadingText>
+                ) : (
+                    <AdminForm onSubmit={handleSubmit(onSubmit)}>
+                        <InputGroup
+                            label={"제목"}
+                            id={"title"}
+                            errorMessage={errors.title?.message}
+                            registerObj={register("title")}
+                        />
+                        <TextareaGroup
+                            label={"본문(내용)"}
+                            id={"content"}
+                            errorMessage={errors.content?.message}
+                            registerObj={register("content")}
+                        />
+                        <div>
+                            {errors.root && (
+                                <AuthRootErrorMessage>{errors.root.message}</AuthRootErrorMessage>
+                            )}
+                            <AdminButtonGroup>
+                                <Button
+                                    type={"button"}
+                                    color={"secondary"}
+                                    variant={"text"}
+                                    onClick={() => navigate(-1)}>
+                                    취소
+                                </Button>
+                                <Button
+                                    color={"primary"}
+                                    variant={"contained"}
+                                    type={"submit"}
+                                    disabled={isSubmitting}>
+                                    {isSubmitting ? "저장중" : "수정"}
+                                </Button>
+                            </AdminButtonGroup>
+                        </div>
+                    </AdminForm>
+                )}
+            </Card>
+        </AdminContainer>
+    );
+}
+
+export default AdminUpdateNoticePage;

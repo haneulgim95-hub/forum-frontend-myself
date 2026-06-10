@@ -60,11 +60,9 @@ function ReplyForm({ postId, loadList, isEditing, replyId, setIsEditing, initial
     };
 
     useEffect(() => {
-        if (!isEditing) {
             reset({
                 postId,
             });
-        }
     }, [postId, reset, isEditing]);
 
     return (

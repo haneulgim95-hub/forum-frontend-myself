@@ -10,6 +10,8 @@ const Textarea = styled.textarea<{ $hasError: boolean }>`
     font-size: 15px;
     color: ${props => props.theme.colors.text.default};
     transition: all 0.5s;
+    min-height: 300px; // 최소 높이 제한
+    resize: vertical;
 
     &::placeholder {
         color: ${props => props.theme.colors.text.disabled};

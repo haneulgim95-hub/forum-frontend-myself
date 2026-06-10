@@ -1,4 +1,4 @@
-import { FiGrid, FiHome, FiUser } from "react-icons/fi";
+import { FiBell, FiGrid, FiHome, FiUser } from "react-icons/fi";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router";
 
@@ -12,6 +12,11 @@ const adminNavList = [
         path: "/admin/user",
         icon: <FiUser size={18} />,
         label: "유저 관리",
+    },
+    {
+        path: "/admin/notice",
+        icon: <FiBell size={18} />,
+        label: "공지사항 관리",
     },
     {
         path: "/",
