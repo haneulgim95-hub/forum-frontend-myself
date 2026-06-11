@@ -1,0 +1,29 @@
+import styled from "styled-components";
+import MyAside from "../components/layout/my/MyAside.tsx";
+import { Outlet } from "react-router";
+
+function MyLayout() {
+    return (
+        <MyContainer>
+            <div><MyAside /></div>
+            <ContentArea>
+                <Outlet/>
+            </ContentArea>
+        </MyContainer>
+    );
+}
+
+export default MyLayout;
+
+const MyContainer = styled.div`
+    display: flex;
+    gap: 30px;
+    min-height: calc(100dvh - 64px - 50px);
+    background-color: ${props => props.theme.colors.background.default};
+`;
+
+const ContentArea = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+`;

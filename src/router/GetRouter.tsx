@@ -21,6 +21,13 @@ import AdminCreateNoticePage from "../pages/admin/notice/create/AdminCreateNotic
 import AdminUpdateNoticePage from "../pages/admin/notice/update/AdminUpdateNoticePage.tsx";
 import NoticeListPage from "../pages/notice/NoticeListPage.tsx";
 import NoticeDetailPage from "../pages/notice/detail/NoticeDetailPage.tsx";
+import AdminInquiryListPage from "../pages/admin/inquiry/AdminInquiryListPage.tsx";
+import MyInquiryListPage from "../pages/my/inquiry/MyInquiryListPage.tsx";
+import MyInfoPage from "../pages/my/info/MyInfoPage.tsx";
+import MyLayout from "../layouts/MyLayout.tsx";
+import MyInquiryDetailPage from "../pages/my/inquiry/detail/MyInquiryDetailPage.tsx";
+import MyInquiryEditPage from "../pages/my/inquiry/edit/MyInquiryEditPage.tsx";
+import MyInquiryCreatePage from "../pages/my/inquiry/create/MyInquiryCreatePage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -85,6 +92,23 @@ const router = createBrowserRouter([
                     { path: ":id", element: <NoticeDetailPage /> },
                 ],
             },
+            {
+                path: "my",
+                loader: userLoader,
+                element: <MyLayout />,
+                children: [
+                    { index: true, element: <MyInfoPage /> },
+                    {
+                        path: "inquiry",
+                        children: [
+                            { index: true, element: <MyInquiryListPage /> },
+                            { path: ":inquiryId", element: <MyInquiryDetailPage /> },
+                            { path: "create", element: <MyInquiryCreatePage /> },
+                            { path: "edit/:inquiryId", element: <MyInquiryEditPage /> },
+                        ],
+                    },
+                ],
+            },
         ],
     },
     {
@@ -116,6 +140,10 @@ const router = createBrowserRouter([
                     { path: "create", element: <AdminCreateNoticePage /> },
                     { path: "update/:id", element: <AdminUpdateNoticePage /> },
                 ],
+            },
+            {
+                path: "inquiry",
+                children: [{ index: true, element: <AdminInquiryListPage /> }],
             },
         ],
     },

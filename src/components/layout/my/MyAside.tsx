@@ -1,62 +1,57 @@
-import { FiBell, FiGrid, FiHome, FiMessageSquare, FiUser } from "react-icons/fi";
-import styled from "styled-components";
+import { FiLock, FiMessageSquare, FiUser, FiUserX } from "react-icons/fi";
 import { Link, useLocation } from "react-router";
+import styled from "styled-components";
 
-const adminNavList = [
+const myNavList = [
     {
-        path: "/admin/category",
-        icon: <FiGrid size={18} />,
-        label: "카테고리 관리",
-    },
-    {
-        path: "/admin/user",
+        path: "/my",
+        label: "회원정보 변경",
         icon: <FiUser size={18} />,
-        label: "유저 관리",
     },
     {
-        path: "/admin/notice",
-        icon: <FiBell size={18} />,
-        label: "공지사항 관리",
+        path: "/my/password",
+        label: "비밀번호 변경",
+        icon: <FiLock size={18} />,
     },
     {
-        path: "/admin/inquiry",
+        path: "/my/inquiry",
+        label: "1:1 문의",
         icon: <FiMessageSquare size={18} />,
-        label: "1:1 문의 관리"
     },
     {
-        path: "/",
-        icon: <FiHome size={18} />,
-        label: "서비스로 돌아가기",
+        path: "/my/withdraw",
+        label: "회원탈퇴",
+        icon: <FiUserX size={18} />,
     },
 ];
 
-function AdminAside() {
+function MyAside() {
     const location = useLocation();
 
     return (
-        <AdminSidebar>
-            <SidebarHeader to={"/admin"}>관리자 센터</SidebarHeader>
+        <MySidebar>
+            <SidebarHeader to={"/my"}>마이페이지</SidebarHeader>
             <SidebarMenu>
-                {adminNavList.map((item, index) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                        <MenuItem to={item.path} key={index} $isActive={isActive}>
-                            {item.icon}
-                            {item.label}
-                        </MenuItem>
-                    );
-                })}
+                {myNavList.map((item, index) => (
+                    <MenuItem
+                        key={index}
+                        to={item.path}
+                        $isActive={location.pathname === item.path}>
+                        {item.icon}
+                        {item.label}
+                    </MenuItem>
+                ))}
             </SidebarMenu>
-        </AdminSidebar>
+        </MySidebar>
     );
 }
 
-export default AdminAside;
+export default MyAside;
 
-const AdminSidebar = styled.aside`
-    width: 260px;
+const MySidebar = styled.aside`
+    width: 240px;
     background-color: ${props => props.theme.colors.background.paper};
-    border-right: 1px solid ${props => props.theme.colors.divider};
+    border: 1px solid ${props => props.theme.colors.divider};
     display: flex;
     flex-direction: column;
 `;
@@ -68,15 +63,15 @@ const SidebarHeader = styled(Link)`
     padding: 0 24px;
     font-size: 20px;
     font-weight: 800;
-    color: ${props => props.theme.colors.primary};
     border-bottom: 1px solid ${props => props.theme.colors.divider};
 `;
 
 const SidebarMenu = styled.nav`
     display: flex;
     flex-direction: column;
-    padding: 16px 0;
-    gap: 8px;
+    margin-bottom: 5px;
+    gap: 4px;
+    flex: 1;
 `;
 
 const MenuItem = styled(Link)<{ $isActive: boolean }>`
@@ -92,7 +87,6 @@ const MenuItem = styled(Link)<{ $isActive: boolean }>`
         props.$isActive ? `${props.theme.colors.primary}15` : "transparent"};
     border-left: 4px solid
         ${props => (props.$isActive ? props.theme.colors.primary : "transparent")};
-    // #3b82f615   rgba 나 마찬가지
     transition: all 0.2s;
 
     &:hover {
