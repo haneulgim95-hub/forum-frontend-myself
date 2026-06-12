@@ -18,7 +18,7 @@ export default MyLayout;
 const MyContainer = styled.div`
     display: flex;
     gap: 30px;
-    min-height: calc(100dvh - 64px - 50px);
+    min-height: calc(100dvh - 64px - 50px - 80px);
     background-color: ${props => props.theme.colors.background.default};
 `;
 
