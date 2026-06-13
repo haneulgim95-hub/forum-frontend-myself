@@ -53,16 +53,69 @@ export const AdminTd = styled.td`
     color: ${props => props.theme.colors.text.disabled};
 `;
 
-export const AdminForm = styled.form<{$wrap?: boolean}>`
+export const AdminForm = styled.form<{ $wrap?: boolean }>`
     display: flex;
-    flex-direction: ${props => props.$wrap ? "row" : "column"};
-    flex-wrap: ${props => props.$wrap ? "wrap" : "nowrap"};
+    flex-direction: ${props => (props.$wrap ? "row" : "column")};
+    flex-wrap: ${props => (props.$wrap ? "wrap" : "nowrap")};
     gap: 32px;
 `;
 
-export const AdminButtonGroup = styled.div<{$align?: "left" | "right" | "center"}>`
+export const AdminButtonGroup = styled.div<{ $align?: "left" | "right" | "center", $marginTop?: string}>`
     display: flex;
     gap: 12px;
     align-items: center;
-    justify-content: ${({$align = "right"}) => $align === "left" ? "flex-start" : $align === "right" ? "flex-end" : "center" };
+    justify-content: ${({ $align = "right" }) =>
+        $align === "left" ? "flex-start" : $align === "right" ? "flex-end" : "center"};
+    margin-top: ${({$marginTop = "30px"}) => $marginTop};
+`;
+
+export const AnswerSection = styled.div`
+    margin-top: 32px;
+    padding: 24px;
+    background-color: ${props => props.theme.colors.background.default};
+    border-radius: 8px;
+
+    .status-badge {
+        margin-right: 12px;
+        vertical-align: middle;
+    }
+`;
+
+export const AnswerDisplay = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+    .answer-content {
+    padding-top: 16px
+`;
+
+export const AnswerHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid ${props => props.theme.colors.divider};
+    padding-bottom: 16px;
+
+    h4 {
+        font-size: 18px;
+        color: ${props => props.theme.colors.primary};
+        font-weight: 700;
+    }
+
+    small {
+        color: ${props => props.theme.colors.secondary};
+        font-size: 14px;
+    }
+`;
+
+export const AnswerTitle = styled.h3`
+    font-size: 16px;
+    font-weight: 500;
+`;
+
+export const AnswerContent = styled.div`
+    padding: 32px 0;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-all;
 `;
