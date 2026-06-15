@@ -23,8 +23,13 @@ const createInquiry = async (input: InquiryInputType): Promise<Inquiry> => {
     return response.data.data;
 };
 
-const deleteInquiry = async (inquiryId: number): Promise<void> => {
-    await axiosInstance.delete(`/inquiry/${inquiryId}`);
+const updateInquiry = async (inquiryId: number, input: InquiryInputType): Promise<Inquiry> => {
+    const response = await axiosInstance.patch(`/inquiry/edit/${inquiryId}`, input);
+    return response.data.data;
 };
 
-export default { fetchMyInquiryList, fetchMyInquiryById, createInquiry, deleteInquiry };
+const deleteInquiry = async (inquiryId: number): Promise<void> => {
+    await axiosInstance.patch(`/inquiry/${inquiryId}`);
+};
+
+export default { fetchMyInquiryList, fetchMyInquiryById, createInquiry, updateInquiry,deleteInquiry };

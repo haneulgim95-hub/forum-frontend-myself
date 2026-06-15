@@ -93,8 +93,8 @@ function MyInquiryListPage() {
                                         })}
                                     </BoardTd>
                                     <BoardTd>
-                                        <Badge color={item.answer ? "success" : "default"}>
-                                            {item.answer ? "답변완료" : "답변대기"}
+                                        <Badge color={ item.answers.length === 0 ? "default" : "success"}>
+                                            {item.answers.length === 0 ? "답변대기" : "답변완료"}
                                         </Badge>
                                     </BoardTd>
                                 </tr>

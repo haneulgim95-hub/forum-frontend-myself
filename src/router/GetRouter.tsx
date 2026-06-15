@@ -28,6 +28,7 @@ import MyLayout from "../layouts/MyLayout.tsx";
 import MyInquiryDetailPage from "../pages/my/inquiry/detail/MyInquiryDetailPage.tsx";
 import MyInquiryEditPage from "../pages/my/inquiry/edit/MyInquiryEditPage.tsx";
 import MyInquiryCreatePage from "../pages/my/inquiry/create/MyInquiryCreatePage.tsx";
+import AdminInquiryDetailPage from "../pages/admin/inquiry/detail/AdminInquiryDetailPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -143,7 +144,10 @@ const router = createBrowserRouter([
             },
             {
                 path: "inquiry",
-                children: [{ index: true, element: <AdminInquiryListPage /> }],
+                children: [
+                    { index: true, element: <AdminInquiryListPage /> },
+                    { path: ":inquiryId", element: <AdminInquiryDetailPage /> },
+                ],
             },
         ],
     },

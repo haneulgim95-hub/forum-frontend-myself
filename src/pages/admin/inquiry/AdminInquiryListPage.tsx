@@ -93,8 +93,8 @@ function AdminInquiryListPage() {
                                         </AdminTd>
                                         <AdminTd>{item.user.nickname}</AdminTd>
                                         <AdminTd>
-                                            <Badge color={item.answer ? "success" : "default"}>
-                                                {item.answer ? "답변완료" : "답변대기"}
+                                            <Badge color={item.answers.length > 0 ? "success" : "default"}>
+                                                {item.answers.length > 0 ? "답변완료" : "답변대기"}
                                             </Badge>
                                         </AdminTd>
                                     </tr>

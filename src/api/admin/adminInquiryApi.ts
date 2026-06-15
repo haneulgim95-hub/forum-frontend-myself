@@ -12,4 +12,9 @@ const fetchInquiryList = async (page: number, size: number): Promise<PaginationR
     return response.data.data;
 };
 
-export default { fetchInquiryList };
+const fetchInquiryById = async (inquiryId: number): Promise<Inquiry> => {
+    const response = await axiosInstance.get(`/admin/inquiry/${inquiryId}`);
+    return response.data.data;
+}
+
+export default { fetchInquiryList, fetchInquiryById };

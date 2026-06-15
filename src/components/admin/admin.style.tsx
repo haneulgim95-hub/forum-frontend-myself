@@ -66,3 +66,73 @@ export const AdminButtonGroup = styled.div<{$align?: "left" | "right" | "center"
     align-items: center;
     justify-content: ${({$align = "right"}) => $align === "left" ? "flex-start" : $align === "right" ? "flex-end" : "center" };
 `;
+
+export const AnswerSection = styled.div`
+    margin-top: 32px;
+    padding: 24px;
+    background-color: ${props => props.theme.colors.background.default};
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .status-badge {
+        margin-right: 12px;
+        vertical-align: middle;
+    }
+`;
+
+export const AnswerDisplay = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+    .answer-content {
+    padding-top: 16px
+`;
+
+export const AnswerHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid ${props => props.theme.colors.divider};
+    padding-bottom: 16px;
+
+    h4 {
+        font-size: 18px;
+        color: ${props => props.theme.colors.primary};
+        font-weight: 700;
+    }
+
+    small {
+        color: ${props => props.theme.colors.secondary};
+        font-size: 14px;
+    }
+`;
+
+export const AnswerContent = styled.div`
+    padding: 32px 0;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+`;
+
+export const AnswerItem = styled.div`
+    background-color: ${props => props.theme.colors.background.paper};
+    border-radius: 8px;
+    border: 1px solid ${props => props.theme.colors.divider};
+    padding: 16px;
+    
+    h4 {
+        color: ${props => props.theme.colors.text.disabled};
+        margin-bottom: 4px;
+    }
+    
+    div {
+        line-height: 1.2;
+        font-size: 14px;
+    }
+`;
+

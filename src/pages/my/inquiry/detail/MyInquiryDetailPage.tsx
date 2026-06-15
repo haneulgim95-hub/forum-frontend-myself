@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import type { Inquiry } from "../../../../types/inquiry.type.ts";
 import {
@@ -39,7 +39,7 @@ function MyInquiryDetailPage() {
     const handleDelete = async () => {
         try {
             if (!confirm("정말 이 문의글을 삭제 하시겠습니까?")) return;
-            
+
             await inquiryApi.deleteInquiry(Number(inquiryId));
             alert("문의글 삭제가 완료 되었습니다.");
             navigate("/my/inquiry");
@@ -81,17 +81,24 @@ function MyInquiryDetailPage() {
 
                 <DetailContent>{inquiry.content}</DetailContent>
 
+
                 <AdminButtonGroup style={{ marginTop: "40px" }}>
-                    <Button color={"secondary"} variant={"contained"} onClick={() => navigate("/my/inquiry")}>
+                    <Button
+                        color={"secondary"}
+                        variant={"contained"}
+                        onClick={() => navigate("/my/inquiry")}>
                         목록으로
                     </Button>
-                    {!inquiry.answer && (
+                    {inquiry.answers.length === 0 && (
                         <>
                             <Button
                                 color={"warning"}
                                 variant={"contained"}
-                                as={Link}
-                                to={`/my/inquiry/edit/${inquiry.id}`}>
+                                onClick={() =>
+                                    navigate(`/my/inquiry/edit/${inquiryId}`, {
+                                        state: { inquiry },
+                                    })
+                                }>
                                 수정
                             </Button>
                             <Button color={"error"} variant={"contained"} onClick={handleDelete}>
