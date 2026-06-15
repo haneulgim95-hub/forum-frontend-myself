@@ -19,13 +19,14 @@ import {
 import Button from "../../../../components/common/button/Button.tsx";
 import AdminInquiryAnswerBox from "../../../../components/inquiry/AdminInquiryAnswerBox.tsx";
 import AdminInquiryAnswerForm from "../../../../components/inquiry/AdminInquiryAnswerForm.tsx";
+import type { Answer } from "../../../../types/answer.type.ts";
 
 function AdminInquiryDetailPage() {
     const navigate = useNavigate();
     const { inquiryId } = useParams<{ inquiryId: string }>();
     const [inquiry, setInquiry] = useState<Inquiry | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [editingAnswer, setEditingAnswer] = useState<Answer | null>(null);
 
     const loadInquiry = useCallback(async () => {
         try {
@@ -81,7 +82,7 @@ function AdminInquiryDetailPage() {
                         <AdminInquiryAnswerBox
                             inquiry={inquiry}
                             reload={loadInquiry}
-                            setIsEdit={setIsEdit}
+                            onEditClick={}
                         />
                     ) : (
                         <AnswerItem>아직 등록된 답변이 없습니다. 답변을 남겨주세요!</AnswerItem>
