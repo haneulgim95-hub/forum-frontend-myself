@@ -101,12 +101,12 @@ const router = createBrowserRouter([
                 element: <MyLayout />,
                 children: [
                     { index: true, element: <MyInfoPage /> },
+                    { path: "password", element: <MyPasswordPage /> },
+                    { path: "withdraw", element: <MyWithdrawPage /> },
                     {
                         path: "inquiry",
                         children: [
                             { index: true, element: <MyInquiryListPage /> },
-                            { path: "password", element: <MyPasswordPage /> },
-                            { path: "withdraw", element: <MyWithdrawPage /> },
                             { path: ":inquiryId", element: <MyInquiryDetailPage /> },
                             { path: "create", element: <MyInquiryCreatePage /> },
                             { path: "edit/:inquiryId", element: <MyInquiryEditPage /> },

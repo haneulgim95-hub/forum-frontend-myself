@@ -1,4 +1,5 @@
 import type { User } from "./user.type.ts";
+import type { Category } from "./category.type.ts";
 
 export interface Post {
     id: number;
@@ -20,4 +21,8 @@ export interface Post {
     } | null;
 
     user: Pick<User, "id" | "nickname" | "email">;
+}
+
+export interface RecentPost extends Post {
+    category: Pick<Category, "id" | "name">;
 }

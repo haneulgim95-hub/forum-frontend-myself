@@ -35,7 +35,7 @@ function MyPasswordPage() {
             reset({
                 prevPassword: "",
                 password: "",
-                confirmPassword: "",
+                passwordConfirm: "",
             });
         } catch (error) {
             console.log(error);
@@ -76,10 +76,10 @@ function MyPasswordPage() {
                     <InputGroup
                         type={"password"}
                         label={"변경할 비밀번호 확인"}
-                        id={"confirmPassword"}
+                        id={"passwordConfirm"}
                         placeholder={"변경할 비밀번호를 다시 한 번 입력해주세요."}
-                        errorMessage={errors.confirmPassword?.message}
-                        registerObj={register("confirmPassword")}
+                        errorMessage={errors.passwordConfirm?.message}
+                        registerObj={register("passwordConfirm")}
                     />
                     <AdminButtonGroup $align={"right"}>
                         <Button
