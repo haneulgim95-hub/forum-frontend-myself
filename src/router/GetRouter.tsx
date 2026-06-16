@@ -31,6 +31,7 @@ import MyInquiryCreatePage from "../pages/my/inquiry/create/MyInquiryCreatePage.
 import AdminInquiryDetailPage from "../pages/admin/inquiry/detail/AdminInquiryDetailPage.tsx";
 import MyPasswordPage from "../pages/my/password/MyPasswordPage.tsx";
 import MyWithdrawPage from "../pages/my/withdraw/MyWithdrawPage.tsx";
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage.tsx";
 
 const adminLoader = () => {
     const { isLoggedIn, user } = useAuthStore.getState();
@@ -121,6 +122,7 @@ const router = createBrowserRouter([
         loader: adminLoader,
         element: <AdminLayout />,
         children: [
+            { index: true, element: <AdminDashboardPage /> },
             {
                 path: "category",
                 children: [
